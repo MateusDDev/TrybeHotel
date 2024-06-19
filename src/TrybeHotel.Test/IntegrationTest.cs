@@ -10,6 +10,10 @@ using System.Text.Json;
 using System.Diagnostics;
 using System.Xml;
 using System.IO;
+using TrybeHotel.Dto;
+using TrybeHotel.Services;
+using System.Net.Http.Headers;
+using FluentAssertions;
 
 public class LoginJson {
     public string? token { get; set; }
