@@ -1,24 +1,14 @@
 namespace TrybeHotel.Test;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using TrybeHotel.Models;
 using TrybeHotel.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json;
-using System.Diagnostics;
-using System.Xml;
-using System.IO;
+using FluentAssertions;
 using TrybeHotel.Dto;
 using TrybeHotel.Services;
 using System.Net.Http.Headers;
-using FluentAssertions;
-
-public class LoginJson {
-    public string? token { get; set; }
-}
-
 
 public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
 {
@@ -26,7 +16,6 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
 
      public IntegrationTest(WebApplicationFactory<Program> factory)
     {
-        //_factory = factory;
         _clientTest = factory.WithWebHostBuilder(builder => {
             builder.ConfigureServices(services =>
             {
@@ -56,7 +45,7 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
                     appContext.SaveChanges();
                     appContext.Hotels.Add(new Hotel {HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1});
                     appContext.Hotels.Add(new Hotel {HotelId = 2, Name = "Trybe Hotel Palmas", Address = "Address 2", CityId = 2});
-                    appContext.Hotels.Add(new Hotel {HotelId = 3, Name = "Trybe Hotel Ponta Negra", Address = "Addres 3", CityId = 1});
+                    appContext.Hotels.Add(new Hotel {HotelId = 3, Name = "Trybe Hotel Ponta Negra", Address = "Address 3", CityId = 1});
                     appContext.SaveChanges();
                     appContext.Rooms.Add(new Room { RoomId = 1, Name = "Room 1", Capacity = 2, Image = "Image 1", HotelId = 1 });
                     appContext.Rooms.Add(new Room { RoomId = 2, Name = "Room 2", Capacity = 3, Image = "Image 2", HotelId = 1 });
@@ -105,8 +94,10 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
     [InlineData("/city")]
     public async Task TestPostCity(string url)
     {
-        var cityMock = new
+        CityDto cityMock = new()
         {
+            CityId = 3,
+            State = "BA",
             Name = "Nome criativo"
         };
 
@@ -132,7 +123,8 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
                 Name = "Trybe Hotel Manaus",
                 Address = "Address 1",
                 CityId = 1,
-                CityName = "Manaus"
+                CityName = "Manaus",
+                State = "AM"
             },
             new HotelDto
             {
@@ -140,7 +132,8 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
                 Name = "Trybe Hotel Palmas",
                 Address = "Address 2",
                 CityId = 2,
-                CityName = "Palmas"
+                CityName = "Palmas",
+                State = "TO"
             },
             new HotelDto
             {
@@ -148,7 +141,8 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
                 Name = "Trybe Hotel Ponta Negra",
                 Address = "Address 3",
                 CityId = 1,
-                CityName = "Manaus"
+                CityName = "Manaus",
+                State = "AM"
             }
         };
 
@@ -179,7 +173,8 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
             Name = "Trybe Hotel RJ",
             Address = "Avenida Atlântica, 1400",
             CityId = 2,
-            CityName = "Palmas"
+            CityName = "Palmas",
+            State = "TO"
         };
 
         var content = new StringContent(JsonConvert.SerializeObject(hotelInput), System.Text.Encoding.UTF8, "application/json");
@@ -210,7 +205,8 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
                     Name = "Trybe Hotel Manaus",
                     Address = "Address 1",
                     CityId = 1,
-                    CityName = "Manaus"
+                    CityName = "Manaus",
+                    State = "AM"
                 }
             },
             new RoomDto
@@ -225,7 +221,8 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
                     Name = "Trybe Hotel Manaus",
                     Address = "Address 1",
                     CityId = 1,
-                    CityName = "Manaus"
+                    CityName = "Manaus",
+                    State = "AM"
                 }
             },
             new RoomDto
@@ -240,7 +237,8 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
                     Name = "Trybe Hotel Manaus",
                     Address = "Address 1",
                     CityId = 1,
-                    CityName = "Manaus"
+                    CityName = "Manaus",
+                    State = "AM"
                 }
             }
         };
@@ -279,7 +277,8 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
                 Name = "Trybe Hotel Manaus",
                 Address = "Address 1",
                 CityId = 1,
-                CityName = "Manaus"
+                CityName = "Manaus",
+                State = "AM"
             }
         };
 
@@ -302,6 +301,5 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
         var response = await _clientTest.DeleteAsync(url);
         Assert.Equal(System.Net.HttpStatusCode.NoContent, response?.StatusCode);
     }
-
-    
+   
 }
