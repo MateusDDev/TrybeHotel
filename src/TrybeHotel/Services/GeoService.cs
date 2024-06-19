@@ -10,24 +10,77 @@ namespace TrybeHotel.Services
         public GeoService(HttpClient client)
         {
             _client = client;
+            _client.BaseAddress = new Uri("https://nominatim.openstreetmap.org");
         }
 
-        // 11. Desenvolva o endpoint GET /geo/status
+        private async Task<object> RequestApi<T>(string path)
+        {
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, path);
+            requestMessage.Headers.Add("Accept", "application/json");
+            requestMessage.Headers.Add("User-Agent", "aspnet-user-agent");
+
+            var response = await _client.SendAsync(requestMessage);
+            if (!response.IsSuccessStatusCode)
+                return null!;
+
+            var result = await response.Content.ReadFromJsonAsync<T>();
+            return result!;    
+        }
+
         public async Task<object> GetGeoStatus()
         {
-            throw new NotImplementedException();
+            var response = await RequestApi<object>("status.php?format=json");
+
+            if (response == null)
+                return default!;
+
+            return response;
         }
         
-        // 12. Desenvolva o endpoint GET /geo/address
-        public async Task<GeoDtoResponse> GetGeoLocation(GeoDto geoDto)
+        public async Task<GeoDtoResponse?> GetGeoLocation(GeoDto geoDto)
         {
-            throw new NotImplementedException();
+            string path = $"search?street={geoDto.Address}&city={geoDto.City}&country=Brazil&state={geoDto.State}&format=json&limit=1";
+
+            var coordinates = await RequestApi<List<GeoDtoResponse>>(path) as List<GeoDtoResponse>;
+            if (coordinates == null)
+                return default;
+
+
+            return coordinates.First();
         }
 
-        // 12. Desenvolva o endpoint GET /geo/address
         public async Task<List<GeoDtoHotelResponse>> GetHotelsByGeo(GeoDto geoDto, IHotelRepository repository)
         {
-            throw new NotImplementedException();
+            var hotels = repository.GetHotels();
+            var hotelTasks = hotels
+                .Select(async h =>
+                {
+                    GeoDto hotelGeo = new()
+                    {
+                        Address = h.Address,
+                        City = h.CityName,
+                        State = h.State
+                    };
+
+                    GeoDtoResponse? coordinates = await GetGeoLocation(geoDto);
+                    GeoDtoResponse? hotelCoordinates = await GetGeoLocation(hotelGeo);
+                    int distance = 0;
+                    if (coordinates != null && hotelCoordinates != null)
+                        distance = CalculateDistance(coordinates.lat!, coordinates.lon!, hotelCoordinates.lat!, hotelCoordinates.lon!);
+
+                    return new GeoDtoHotelResponse
+                    {
+                        HotelId = h.HotelId,
+                        Name = h.Name,
+                        Address = h.Address,
+                        CityName = h.CityName,
+                        State = h.State,
+                        Distance = distance
+                    };
+                });
+
+            var geoHotelsDto = await Task.WhenAll(hotelTasks);
+            return geoHotelsDto.ToList();
         }
 
        

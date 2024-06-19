@@ -1,5 +1,6 @@
 using TrybeHotel.Models;
 using TrybeHotel.Dto;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrybeHotel.Repository
 {
@@ -11,16 +12,39 @@ namespace TrybeHotel.Repository
             _context = context;
         }
 
-        //  5. Refatore o endpoint GET /hotel
         public IEnumerable<HotelDto> GetHotels()
         {
-            throw new NotImplementedException();
+            var hotels = _context.Hotels
+                .Include(hotel => hotel.City)
+                .Select(h => new HotelDto
+                {
+                    HotelId = h.HotelId,
+                    Name = h.Name,
+                    Address = h.Address,
+                    CityId = h.CityId,
+                    CityName = h.City!.Name,
+                    State = h.City!.State
+                }).ToList();
+            return hotels;
         }
-
-        // 6. Refatore o endpoint POST /hotel
+        
         public HotelDto AddHotel(Hotel hotel)
         {
-           throw new NotImplementedException();
+            var newHotel = _context.Hotels.Add(hotel).Entity;
+            _context.SaveChanges();
+
+            return _context.Hotels
+                .Where(ht => ht.HotelId == hotel.HotelId)
+                .Include(hotel => hotel.City)
+                .Select(h => new HotelDto
+                {
+                    HotelId = h.HotelId,
+                    Name = h.Name,
+                    Address = h.Address,
+                    CityId = h.CityId,
+                    CityName = h.City!.Name,
+                    State = h.City!.State
+                }).First();
         }
     }
 }
