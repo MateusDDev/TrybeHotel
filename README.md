@@ -35,7 +35,7 @@ Para executar a aplicação localmente, siga os passos abaixo:
    dotnet ef database update
    ```
 
-A documentação da API está disponível em `/swagger`.
+A documentação da API está disponível em [http://localhost:8080/swagger](http://localhost:8080/swagger).
 
 ## Observações
 
