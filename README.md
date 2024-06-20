@@ -13,6 +13,8 @@ O Trybe Hotel é uma aplicação que oferece um sistema completo para gerenciar 
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![xUnit](https://img.shields.io/badge/xUnit-512BD4?style=for-the-badge&logo=xunit&logoColor=white)
 
+Aqui está a seção atualizada para incluir o passo final de rodar a aplicação localmente:
+
 ## Executando a Aplicação Localmente
 
 Para executar a aplicação localmente, siga os passos abaixo:
@@ -35,8 +37,14 @@ Para executar a aplicação localmente, siga os passos abaixo:
    dotnet ef database update
    ```
 
-A documentação da API está disponível em [http://localhost:8080/swagger](http://localhost:8080/swagger).
+4. Finalmente, para rodar a aplicação, execute o seguinte comando dentro do diretório `src/TrybeHotel`:
+
+   ```bash
+   dotnet run
+   ```
+
+A documentação da API está disponível em `/swagger`.
 
 ## Observações
 
--   Além das etapas descritas anteriormente, o projeto utiliza Docker Compose para facilitar a execução do ambiente de desenvolvimento. Certifique-se de que o Docker e o Docker Compose estejam instalados em sua máquina antes de prosseguir com as etapas acima.
+- Além das etapas descritas anteriormente, o projeto utiliza Docker Compose para facilitar a execução do ambiente de desenvolvimento. Certifique-se de que o Docker e o Docker Compose estejam instalados em sua máquina.

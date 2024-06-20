@@ -1,18 +1,6 @@
 version: '3'
 
 services:
-  trybe-hotel:
-    container_name: trybe-hotel-api
-    build:
-      context: ./src/TrybeHotel
-      dockerfile: Dockerfile
-    ports:
-      - "8080:80"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    depends_on:
-      - sqlserver
-
   sqlserver:
     container_name: trybe-hotel-db
     image: mcr.microsoft.com/azure-sql-edge:latest
