@@ -34,7 +34,7 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///home/spec/Documentos/Projetos/CSharp/02/csharp-034-csharp-projeto-trybe-hotel-fase-d/src/TrybeHotel/Repository/UserRepository.cs",
+                "uri": "file:///home/spec/Downloads/TrybeHotel/src/TrybeHotel/Repository/UserRepository.cs",
                 "region": {
                   "startLine": 56,
                   "startColumn": 25,
@@ -55,7 +55,7 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///home/spec/Documentos/Projetos/CSharp/02/csharp-034-csharp-projeto-trybe-hotel-fase-d/src/TrybeHotel/Program.cs",
+                "uri": "file:///home/spec/Downloads/TrybeHotel/src/TrybeHotel/Program.cs",
                 "region": {
                   "startLine": 99,
                   "startColumn": 22,
@@ -68,7 +68,7 @@
           "relatedLocations": [
             {
               "physicalLocation": {
-                "uri": "file:///home/spec/Documentos/Projetos/CSharp/02/csharp-034-csharp-projeto-trybe-hotel-fase-d/src/TrybeHotel/Program.cs",
+                "uri": "file:///home/spec/Downloads/TrybeHotel/src/TrybeHotel/Program.cs",
                 "region": {
                   "startLine": 10,
                   "startColumn": 1,
@@ -89,7 +89,7 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///home/spec/Documentos/Projetos/CSharp/02/csharp-034-csharp-projeto-trybe-hotel-fase-d/src/TrybeHotel/Services/TokenGenerator.cs",
+                "uri": "file:///home/spec/Downloads/TrybeHotel/src/TrybeHotel/Services/TokenGenerator.cs",
                 "region": {
                   "startLine": 43,
                   "startColumn": 32,
